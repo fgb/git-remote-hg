@@ -164,6 +164,16 @@ class Marks:
                 'last-note': self.last_note }
 
     def store(self):
+        found = False
+        path = os.path.join(dirname, 'marks-git')
+        with open(path, "r") as f:
+            for line in f:
+                if line.startswith(':%u ' % self.last_note):
+                    found = True
+                    break
+        if not found:
+            warn("Last note note found")
+            self.last_note = None
         json.dump(self.dict(), open(self.path, 'w'))
 
     def __str__(self):
